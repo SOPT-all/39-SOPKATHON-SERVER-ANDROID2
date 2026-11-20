@@ -13,10 +13,10 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
 
       - name: Set up Java 21
-        uses: actions/setup-java@v4
+        uses: actions/setup-java@v5
         with:
           distribution: temurin
           java-version: '21'
@@ -84,5 +84,6 @@ jobs:
               --name sopkathon-server \
               --restart unless-stopped \
               --env-file /opt/sopkathon/.env \
+              -e SPRING_PROFILES_ACTIVE=prod \
               -p 127.0.0.1:8080:8080 \
               "$IMAGE"
