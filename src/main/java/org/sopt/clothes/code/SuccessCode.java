@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum SuccessCode implements ResultCode {
-	CLOTHES_CREATED(HttpStatus.CREATED, "옷 추가에 성공했습니다.");
+	CLOTHES_CREATED(HttpStatus.CREATED, "옷 추가에 성공했습니다."),
+	CLOTHES_LIST_FOUND(HttpStatus.OK, "옷 목록 조회에 성공했습니다.");
 
 	private final HttpStatus status;
 	private final String message;
