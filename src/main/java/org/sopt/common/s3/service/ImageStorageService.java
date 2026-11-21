@@ -1,8 +1,10 @@
-package org.sopt.common.s3;
+package org.sopt.common.s3.service;
 
 import java.time.Duration;
 import java.util.UUID;
 
+import org.sopt.common.s3.dto.ImageUpload;
+import org.sopt.common.s3.exception.InvalidImageContentTypeException;
 import org.springframework.http.MediaType;
 import org.springframework.stereotype.Service;
 
@@ -31,17 +33,16 @@ public class ImageStorageService {
 		try {
 			mediaType = MediaType.parseMediaType(contentType);
 		} catch (RuntimeException exception) {
-			throw new IllegalArgumentException("Content-Type must be an image media type", exception);
+			throw new InvalidImageContentTypeException(exception);
 		}
 		if (!"image".equalsIgnoreCase(mediaType.getType()) || mediaType.isWildcardSubtype()) {
-			throw new IllegalArgumentException("Content-Type must be an image media type");
+			throw new InvalidImageContentTypeException();
 		}
 
 		String key = IMAGE_PREFIX + UUID.randomUUID();
 		PutObjectRequest putRequest = PutObjectRequest.builder()
 			.bucket(properties.bucket())
 			.key(key)
-			.contentType(contentType)
 			.build();
 		PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
 			.signatureDuration(UPLOAD_URL_EXPIRATION)
