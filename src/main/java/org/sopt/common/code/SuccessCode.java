@@ -15,6 +15,7 @@ public enum SuccessCode implements ResultCode {
 	COMMENT_CREATED(HttpStatus.CREATED, "댓글 작성에 성공했습니다."),
 	COMMENT_RETRIEVED(HttpStatus.OK, "댓글 조회에 성공했습니다."),
 	TARGET_USER_FOUND(HttpStatus.OK, "동료 프로필 조회에 성공했습니다."),
+	USER_SEARCHED(HttpStatus.OK, "동료 검색에 성공했습니다."),
 	FEED_RETRIEVED(HttpStatus.OK, "피드가 성공적으로 조회되었습니다.");
 
 	private final HttpStatus status;
