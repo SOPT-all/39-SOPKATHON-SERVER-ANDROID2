@@ -1,14 +1,14 @@
 package org.sopt.common.exception;
 
-import org.sopt.common.code.ErrorCode;
+import org.sopt.common.code.ResultCode;
 
 import lombok.Getter;
 
 @Getter
 public class BaseException extends RuntimeException {
-	private final ErrorCode errorCode;
+	private final ResultCode errorCode;
 
-	public BaseException(ErrorCode errorCode) {
+	public BaseException(ResultCode errorCode) {
 		super(errorCode.getMessage());
 		this.errorCode = errorCode;
 	}
