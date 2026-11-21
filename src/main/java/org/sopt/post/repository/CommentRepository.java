@@ -6,6 +6,7 @@ import java.util.List;
 import org.sopt.post.entity.Comment;
 import org.springframework.data.jpa.repository.EntityGraph;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -13,6 +14,19 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
 	long countByPostId(Long postId);
 
 	long countByPost_Id(Long postId);
+
+	@EntityGraph(attributePaths = "user")
+	@Query("select c from Comment c " +
+		"where c.post.id = :postId " +
+		"and (:cursorCreatedAt is null or c.createdAt < :cursorCreatedAt " +
+		"or (c.createdAt = :cursorCreatedAt and c.id < :cursorId)) " +
+		"order by c.createdAt desc, c.id desc")
+	List<Comment> findPageByPostId(
+		@Param("postId") Long postId,
+		@Param("cursorCreatedAt") java.time.LocalDateTime cursorCreatedAt,
+		@Param("cursorId") Long cursorId,
+		Pageable pageable
+	);
 
 	@EntityGraph(attributePaths = "user")
 	List<Comment> findTop3ByPost_IdOrderByCreatedAtDescIdDesc(Long postId);

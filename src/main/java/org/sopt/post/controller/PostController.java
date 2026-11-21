@@ -6,24 +6,12 @@ import org.sopt.common.code.SuccessCode;
 import org.sopt.common.response.ApiResponse;
 import org.sopt.post.dto.request.CommentCreateRequest;
 import org.sopt.post.dto.request.PostCreateRequest;
-import org.sopt.post.dto.response.CommentCreateResponse;
-import org.sopt.post.dto.response.PostCreateResponse;
-import org.sopt.post.dto.response.PostDetailResponse;
-import org.sopt.post.dto.response.PostLikeResponse;
-import org.sopt.post.service.CommentService;
-import org.sopt.post.service.LikeService;
-import org.sopt.post.service.PostDetailService;
-import org.sopt.post.service.PostService;
+import org.sopt.post.dto.response.*;
+import org.sopt.post.service.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/v1/users/{userId}/posts")
@@ -34,6 +22,7 @@ public class PostController {
 	private final PostDetailService postDetailService;
 	private final LikeService likeService;
 	private final CommentService commentService;
+    private final CommentQueryService commentQueryService;
 
 	@PostMapping
 	public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
@@ -86,4 +75,17 @@ public class PostController {
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(ApiResponse.success(SuccessCode.COMMENT_CREATED, response));
 	}
+
+    @GetMapping("/{postId}/comments")
+    public ApiResponse<CommentPageResponse> getComments(
+            @PathVariable("userId") Long userId,
+            @PathVariable("postId") Long postId,
+            @RequestParam(defaultValue = "20") int limit,
+            @RequestParam(required = false) String cursor
+    ) {
+        return ApiResponse.success(
+                SuccessCode.COMMENT_RETRIEVED,
+                commentQueryService.getComments(userId, postId, limit, cursor)
+        );
+    }
 }
