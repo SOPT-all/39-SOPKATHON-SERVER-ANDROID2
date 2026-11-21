@@ -10,6 +10,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface CommentRepository extends JpaRepository<Comment, Long> {
+	long countByPostId(Long postId);
+
 	long countByPost_Id(Long postId);
 
 	@EntityGraph(attributePaths = "user")
