@@ -1,10 +1,16 @@
 package org.sopt.user.service;
 
+import java.util.List;
+
 import org.sopt.user.dto.request.UserCreateRequest;
 import org.sopt.user.dto.response.UserCreateResponse;
+import org.sopt.user.dto.response.UserProfileResponse;
 import org.sopt.user.entity.User;
 import org.sopt.common.code.ErrorCode;
 import org.sopt.common.exception.BaseException;
+import org.sopt.common.s3.service.ImageStorageService;
+import org.sopt.post.entity.Post;
+import org.sopt.post.repository.PostRepository;
 import org.sopt.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,6 +22,8 @@ import lombok.RequiredArgsConstructor;
 public class UserService {
 
 	private final UserRepository userRepository;
+	private final PostRepository postRepository;
+	private final ImageStorageService imageStorageService;
 
 	@Transactional
 	public UserCreateResponse createUser(UserCreateRequest request) {
@@ -39,5 +47,42 @@ public class UserService {
 
 		User savedUser = userRepository.save(user);
 		return new UserCreateResponse(savedUser.getId());
+	}
+
+	@Transactional(readOnly = true)
+	public UserProfileResponse getUserProfile(Long userId) {
+		User user = userRepository.findById(userId)
+			.orElseThrow(() -> new BaseException(ErrorCode.USER_NOT_FOUND));
+
+		List<UserProfileResponse.ReceivedOutfitResponse> receivedOutfits = postRepository
+			.findByTargetUserIdOrderByCreatedAtDesc(userId)
+			.stream()
+			.map(this::toReceivedOutfitResponse)
+			.toList();
+
+		return new UserProfileResponse(
+			user.getId(),
+			user.getName(),
+			user.getPosition().getLabel(),
+			user.getDepartment().getLabel(),
+			toImageUrl(user.getProfileImageKey()),
+			postRepository.countByAuthorId(userId),
+			postRepository.countByTargetUserId(userId),
+			receivedOutfits
+		);
+	}
+
+	private UserProfileResponse.ReceivedOutfitResponse toReceivedOutfitResponse(Post post) {
+		return new UserProfileResponse.ReceivedOutfitResponse(
+			post.getId(),
+			post.getTitle(),
+			toImageUrl(post.getImageKey()),
+			post.getDescription(),
+			post.getCreatedAt()
+		);
+	}
+
+	private String toImageUrl(String imageKey) {
+		return imageKey == null ? null : imageStorageService.getImageUrl(imageKey);
 	}
 }

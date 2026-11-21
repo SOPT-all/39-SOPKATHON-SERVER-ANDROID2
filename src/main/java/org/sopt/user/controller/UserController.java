@@ -4,9 +4,12 @@ import org.sopt.common.response.ApiResponse;
 import org.sopt.common.code.SuccessCode;
 import org.sopt.user.dto.request.UserCreateRequest;
 import org.sopt.user.dto.response.UserCreateResponse;
+import org.sopt.user.dto.response.UserProfileResponse;
 import org.sopt.user.service.UserService;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -31,6 +34,16 @@ public class UserController {
 	) {
 		return ResponseEntity.ok(
 			ApiResponse.success(SuccessCode.USER_CREATED, userService.createUser(request))
+		);
+	}
+
+	@GetMapping("/{userId}")
+	@Operation(summary = "동료 프로필 조회")
+	public ResponseEntity<ApiResponse<UserProfileResponse>> getUserProfile(
+		@PathVariable Long userId
+	) {
+		return ResponseEntity.ok(
+			ApiResponse.success(SuccessCode.TARGET_USER_FOUND, userService.getUserProfile(userId))
 		);
 	}
 }
