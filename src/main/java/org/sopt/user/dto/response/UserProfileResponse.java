@@ -10,7 +10,7 @@ public record UserProfileResponse(
 	String department,
 	String profileImageUrl,
 	long postCount,
-	long suggestedOutfitCount,
+	long receivedPostCount,
 	List<ReceivedOutfitResponse> receivedOutfits
 ) {
 	public record ReceivedOutfitResponse(
