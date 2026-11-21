@@ -5,6 +5,8 @@ import org.sopt.common.code.SuccessCode;
 import org.sopt.common.response.ApiResponse;
 import org.sopt.post.dto.request.PostCreateRequest;
 import org.sopt.post.dto.response.PostCreateResponse;
+import org.sopt.post.dto.response.PostLikeResponse;
+import org.sopt.post.service.LikeService;
 import org.sopt.post.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +25,7 @@ import jakarta.validation.Valid;
 @Validated
 public class PostController {
 	private final PostService postService;
+	private final LikeService likeService;
 
 	@PostMapping
 	public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
@@ -32,5 +35,15 @@ public class PostController {
 		PostCreateResponse response = postService.createPost(userId, request);
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(ApiResponse.success(SuccessCode.POST_CREATED, response));
+	}
+
+	@PostMapping("/{postId}/like")
+	public ResponseEntity<ApiResponse<PostLikeResponse>> likePost(
+		@PathVariable("userId") Long userId,
+		@PathVariable("postId") Long postId
+	) {
+		PostLikeResponse response = likeService.likePost(userId, postId);
+		return ResponseEntity.status(org.sopt.post.code.SuccessCode.SUCCESS.getStatus())
+			.body(ApiResponse.success(org.sopt.post.code.SuccessCode.SUCCESS, response));
 	}
 }
