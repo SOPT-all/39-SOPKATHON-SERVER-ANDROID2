@@ -95,4 +95,5 @@ public class GlobalExceptionHandler {
 			.status(code.getStatus())
 			.body(ApiResponse.failure(code));
 	}
+
 }
