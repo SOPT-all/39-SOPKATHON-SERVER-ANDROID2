@@ -1,0 +1,23 @@
+package org.sopt.user.dto.response;
+
+import java.util.List;
+
+public record UserProfileResponse(
+	Long userId,
+	String name,
+	String position,
+	String department,
+	String profileImageUrl,
+	long postCount,
+	long receivedPostCount,
+	int receivedLikeCount,
+	List<ReceivedOutfitResponse> receivedOutfits
+) {
+	public record ReceivedOutfitResponse(
+		Long postId,
+		String title,
+		String imageUrl,
+		int likeCount
+	) {
+	}
+}
