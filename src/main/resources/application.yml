@@ -11,3 +11,8 @@ spring:
 server:
   port: 8080
   forward-headers-strategy: framework
+
+app:
+  s3:
+    bucket: ${AWS_S3_BUCKET:sopt39sopkathon}
+    region: ${AWS_REGION:ap-northeast-2}
