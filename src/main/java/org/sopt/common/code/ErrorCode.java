@@ -22,9 +22,11 @@ public enum ErrorCode implements ResultCode {
 	INVALID_POST_TARGET(HttpStatus.BAD_REQUEST, "공개 범위에 맞는 대상 사용자 정보를 입력해 주세요."),
 	METHOD_NOT_ALLOWED(HttpStatus.UNAUTHORIZED, "지원하지 않는 HTTP 메서드"),
 	MISSING_REQUEST_HEADER(HttpStatus.BAD_REQUEST, "필수 요청 헤더 누락"),
-	INVALID_IMAGE_CONTENT_TYPE(HttpStatus.BAD_REQUEST, "이미지 Content-Type이 올바르지 않습니다"),
-	INVALID_ARGUMENT(HttpStatus.BAD_REQUEST, "요청 인자가 올바르지 않습니다");
+    INVALID_IMAGE_CONTENT_TYPE(HttpStatus.BAD_REQUEST, "이미지 Content-Type이 올바르지 않습니다"),
+    INVALID_ARGUMENT(HttpStatus.BAD_REQUEST, "요청 인자가 올바르지 않습니다"),
+    INVALID_CURSOR(HttpStatus.BAD_REQUEST, "페이지 커서가 올바르지 않습니다.");
 
-	private final HttpStatus status;
+
+    private final HttpStatus status;
 	private final String message;
 }
