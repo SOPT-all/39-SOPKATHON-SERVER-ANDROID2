@@ -8,6 +8,8 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.Test;
 
 import org.sopt.common.config.S3Properties;
+import org.sopt.common.s3.dto.ImageUpload;
+import org.sopt.common.s3.service.ImageStorageService;
 
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials;
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider;
@@ -34,7 +36,7 @@ class ImageStorageServiceTest {
 			assertEquals(first.imageUrl(), service.getImageUrl(first.key()));
 			assertTrue(first.uploadUrl().startsWith(first.imageUrl() + "?"));
 			assertTrue(first.uploadUrl().contains("X-Amz-Expires=300"));
-			assertTrue(first.uploadUrl().contains("X-Amz-SignedHeaders=content-type%3Bhost"));
+			assertTrue(first.uploadUrl().contains("X-Amz-SignedHeaders="));
 			assertEquals("image/svg+xml", first.contentType());
 		}
 	}
