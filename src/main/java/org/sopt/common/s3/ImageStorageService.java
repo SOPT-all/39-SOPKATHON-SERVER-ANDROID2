@@ -1,0 +1,66 @@
+package org.sopt.common.s3;
+
+import java.time.Duration;
+import java.util.UUID;
+
+import org.springframework.http.MediaType;
+import org.springframework.stereotype.Service;
+
+import org.sopt.common.config.S3Properties;
+
+import software.amazon.awssdk.services.s3.model.PutObjectRequest;
+import software.amazon.awssdk.services.s3.presigner.S3Presigner;
+import software.amazon.awssdk.services.s3.presigner.model.PutObjectPresignRequest;
+
+@Service
+public class ImageStorageService {
+
+	private static final Duration UPLOAD_URL_EXPIRATION = Duration.ofMinutes(5);
+	private static final String IMAGE_PREFIX = "images/";
+
+	private final S3Presigner presigner;
+	private final S3Properties properties;
+
+	public ImageStorageService(S3Presigner presigner, S3Properties properties) {
+		this.presigner = presigner;
+		this.properties = properties;
+	}
+
+	public ImageUpload createUpload(String contentType) {
+		MediaType mediaType;
+		try {
+			mediaType = MediaType.parseMediaType(contentType);
+		} catch (RuntimeException exception) {
+			throw new IllegalArgumentException("Content-Type must be an image media type", exception);
+		}
+		if (!"image".equalsIgnoreCase(mediaType.getType()) || mediaType.isWildcardSubtype()) {
+			throw new IllegalArgumentException("Content-Type must be an image media type");
+		}
+
+		String key = IMAGE_PREFIX + UUID.randomUUID();
+		PutObjectRequest putRequest = PutObjectRequest.builder()
+			.bucket(properties.bucket())
+			.key(key)
+			.contentType(contentType)
+			.build();
+		PutObjectPresignRequest presignRequest = PutObjectPresignRequest.builder()
+			.signatureDuration(UPLOAD_URL_EXPIRATION)
+			.putObjectRequest(putRequest)
+			.build();
+
+		return new ImageUpload(
+			key,
+			presigner.presignPutObject(presignRequest).url().toString(),
+			getImageUrl(key),
+			contentType
+		);
+	}
+
+	public String getImageUrl(String key) {
+		if (key == null || !key.matches("images/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")) {
+			throw new IllegalArgumentException("Invalid image key");
+		}
+		return "https://%s.s3.%s.amazonaws.com/%s".formatted(
+			properties.bucket(), properties.region(), key);
+	}
+}
