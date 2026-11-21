@@ -5,15 +5,13 @@ import org.sopt.common.code.SuccessCode;
 import org.sopt.common.response.ApiResponse;
 import org.sopt.post.dto.request.PostCreateRequest;
 import org.sopt.post.dto.response.PostCreateResponse;
+import org.sopt.post.dto.response.PostDetailResponse;
+import org.sopt.post.service.PostDetailService;
 import org.sopt.post.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import jakarta.validation.Valid;
 
@@ -23,6 +21,7 @@ import jakarta.validation.Valid;
 @Validated
 public class PostController {
 	private final PostService postService;
+	private final PostDetailService postDetailService;
 
 	@PostMapping
 	public ResponseEntity<ApiResponse<PostCreateResponse>> createPost(
@@ -32,5 +31,16 @@ public class PostController {
 		PostCreateResponse response = postService.createPost(userId, request);
 		return ResponseEntity.status(HttpStatus.CREATED)
 			.body(ApiResponse.success(SuccessCode.POST_CREATED, response));
+	}
+
+	@GetMapping("/{postId}")
+	public ApiResponse<PostDetailResponse> getPostDetail(
+		@PathVariable("userId") Long userId,
+		@PathVariable("postId") Long postId
+	) {
+		return ApiResponse.success(
+			SuccessCode.POST_RETRIEVED,
+			postDetailService.getPostDetail(userId, postId)
+		);
 	}
 }

@@ -17,6 +17,7 @@ public enum ErrorCode implements ResultCode {
 	CONSTRAINT_VIOLATION(HttpStatus.BAD_REQUEST, "Bean Validation 제약 조건 위반"),
 	RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 경로 또는 정적 리소스"),
 	USER_NOT_FOUND(HttpStatus.NOT_FOUND, "사용자를 찾을 수 없습니다."),
+	POST_NOT_FOUND(HttpStatus.NOT_FOUND, "게시글을 찾을 수 없습니다."),
 	CLOTHES_NOT_FOUND(HttpStatus.NOT_FOUND, "옷 정보를 찾을 수 없습니다."),
 	INVALID_POST_TARGET(HttpStatus.BAD_REQUEST, "공개 범위에 맞는 대상 사용자 정보를 입력해 주세요."),
 	METHOD_NOT_ALLOWED(HttpStatus.UNAUTHORIZED, "지원하지 않는 HTTP 메서드"),
