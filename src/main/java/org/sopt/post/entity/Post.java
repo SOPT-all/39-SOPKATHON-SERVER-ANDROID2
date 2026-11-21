@@ -27,7 +27,7 @@ public class Post extends BaseEntity {
 	@Column(length = 255, nullable = false)
 	private String imageKey;
 
-	@Column(nullable = false)
+	@Column(columnDefinition = "TEXT")
 	private String description;
 
 	@Enumerated(EnumType.STRING)
