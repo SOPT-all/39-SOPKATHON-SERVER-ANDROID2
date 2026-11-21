@@ -44,7 +44,7 @@ public class ClothesService {
 		List<ClothesListResponse.ClothesItemResponse> top = new ArrayList<>();
 		List<ClothesListResponse.ClothesItemResponse> bottom = new ArrayList<>();
 
-		for (Clothes clothes : clothesRepository.findAll()) {
+		for (Clothes clothes : clothesRepository.findAllByOrderByIdDesc()) {
 			ClothesListResponse.ClothesItemResponse item = toResponse(clothes);
 			if (clothes.getCategory() == ClothesCategory.TOP) {
 				top.add(item);
