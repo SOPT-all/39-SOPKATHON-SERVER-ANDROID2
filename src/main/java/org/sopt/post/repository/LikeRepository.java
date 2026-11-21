@@ -10,16 +10,22 @@ import org.springframework.data.repository.query.Param;
 
 public interface LikeRepository extends JpaRepository<Like, Long> {
 
-	//long countByPost_Id(Long postId);
+    // 상세 조회에서 현재 사용자가 좋아요를 눌렀는지 확인
+    boolean existsByUser_IdAndPost_Id(Long userId, Long postId);
 
-	boolean existsByUser_IdAndPost_Id(Long userId, Long postId);
-	long countByPostId(Long postId);
+    // 좋아요 API에서 사용하는 동일한 확인 메서드
+    boolean existsByUserIdAndPostId(Long userId, Long postId);
 
-	@Query("select l.post.id as postId, count(l.id) as totalCount " +
-		"from Like l where l.post.id in :postIds group by l.post.id")
-	List<PostCountProjection> countLikesByPostIds(@Param("postIds") Collection<Long> postIds);
+    long countByPostId(Long postId);
 
-	@Query("select l.post.id from Like l " +
-		"where l.user.id = :userId and l.post.id in :postIds")
-	List<Long> findLikedPostIds(@Param("userId") Long userId, @Param("postIds") Collection<Long> postIds);
+    @Query("select l.post.id as postId, count(l.id) as totalCount " +
+        "from Like l where l.post.id in :postIds group by l.post.id")
+    List<PostCountProjection> countLikesByPostIds(@Param("postIds") Collection<Long> postIds);
+
+    @Query("select l.post.id from Like l " +
+        "where l.user.id = :userId and l.post.id in :postIds")
+    List<Long> findLikedPostIds(
+        @Param("userId") Long userId,
+        @Param("postIds") Collection<Long> postIds
+    );
 }
