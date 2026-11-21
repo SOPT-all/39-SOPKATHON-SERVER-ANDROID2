@@ -4,6 +4,7 @@ import org.sopt.common.code.ErrorCode;
 import org.sopt.common.code.ResultCode;
 import org.sopt.common.exception.BaseException;
 import org.sopt.common.response.ApiResponse;
+import org.sopt.common.s3.exception.InvalidImageContentTypeException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.HttpRequestMethodNotSupportedException;
@@ -26,6 +27,16 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(BaseException.class)
 	public ResponseEntity<ApiResponse<Void>> handleBaseException(BaseException e) {
 		return createResponse(e.getErrorCode());
+	}
+
+	@ExceptionHandler(InvalidImageContentTypeException.class)
+	public ResponseEntity<ApiResponse<Void>> handleInvalidImageContentTypeException(InvalidImageContentTypeException e) {
+		return createResponse(ErrorCode.INVALID_IMAGE_CONTENT_TYPE);
+	}
+
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity<ApiResponse<Void>> handleIllegalArgumentException(IllegalArgumentException e) {
+		return createResponse(ErrorCode.INVALID_ARGUMENT);
 	}
 
 	@ExceptionHandler(Exception.class)

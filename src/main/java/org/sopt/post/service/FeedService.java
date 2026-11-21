@@ -9,12 +9,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
 import lombok.RequiredArgsConstructor;
 import org.sopt.clothes.entity.Clothes;
 import org.sopt.common.code.ErrorCode;
 import org.sopt.common.exception.BaseException;
-import org.sopt.common.s3.ImageStorageService;
+import org.sopt.common.s3.service.ImageStorageService;
 import org.sopt.post.dto.response.FeedItemResponse;
 import org.sopt.post.dto.response.FeedResponse;
 import org.sopt.post.dto.response.FeedUserResponse;
