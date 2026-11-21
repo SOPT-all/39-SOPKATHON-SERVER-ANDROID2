@@ -41,4 +41,17 @@ public class LikeService {
 
 		return new PostLikeResponse(postId, true, likeRepository.countByPostId(postId));
 	}
+
+	@Transactional
+	public PostLikeResponse unlikePost(Long userId, Long postId) {
+		if (!userRepository.existsById(userId)) {
+			throw new UserNotFoundException();
+		}
+		if (!postRepository.existsById(postId)) {
+			throw new PostNotFoundException();
+		}
+
+		likeRepository.deleteByUserIdAndPostId(userId, postId);
+		return new PostLikeResponse(postId, false, likeRepository.countByPostId(postId));
+	}
 }
