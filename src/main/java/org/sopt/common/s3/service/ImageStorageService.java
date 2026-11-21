@@ -58,7 +58,7 @@ public class ImageStorageService {
 	}
 
 	public String getImageUrl(String key) {
-		if (key == null || !key.matches("images/[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}")) {
+		if (key == null || key.isBlank() || !key.startsWith(IMAGE_PREFIX) || key.contains("..")) {
 			throw new IllegalArgumentException("Invalid image key");
 		}
 		return "https://%s.s3.%s.amazonaws.com/%s".formatted(
