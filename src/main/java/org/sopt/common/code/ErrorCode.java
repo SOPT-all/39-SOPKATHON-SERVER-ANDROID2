@@ -13,7 +13,7 @@ public enum ErrorCode implements ResultCode {
 	INVALID_TYPE_VALUE(HttpStatus.BAD_REQUEST, "요청 파라미터 타입 불일치"),
 	MISSING_PARAMETER(HttpStatus.BAD_REQUEST, "필수 파라미터 누락"),
 	INVALID_REQUEST_BODY(HttpStatus.BAD_REQUEST, "잘못된 요청 형식입니다."),
-	USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 가입된 사용자입니다."),
+	USER_ALREADY_EXISTS(HttpStatus.CONFLICT, "이미 프로필을 생성하셨습니다."),
 	VALIDATION_FAILED(HttpStatus.BAD_REQUEST, "메서드 파라미터 검증 실패"),
 	CONSTRAINT_VIOLATION(HttpStatus.BAD_REQUEST, "Bean Validation 제약 조건 위반"),
 	RESOURCE_NOT_FOUND(HttpStatus.NOT_FOUND, "존재하지 않는 경로 또는 정적 리소스"),
