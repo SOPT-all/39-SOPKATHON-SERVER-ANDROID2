@@ -10,6 +10,7 @@ import org.sopt.common.code.ErrorCode;
 import org.sopt.common.exception.BaseException;
 import org.sopt.common.s3.service.ImageStorageService;
 import org.sopt.post.entity.Post;
+import org.sopt.post.repository.LikeRepository;
 import org.sopt.post.repository.PostRepository;
 import org.sopt.user.repository.UserRepository;
 import org.springframework.stereotype.Service;
@@ -23,6 +24,7 @@ public class UserService {
 
 	private final UserRepository userRepository;
 	private final PostRepository postRepository;
+	private final LikeRepository likeRepository;
 	private final ImageStorageService imageStorageService;
 
 	@Transactional
@@ -78,7 +80,7 @@ public class UserService {
 			post.getTitle(),
 			toImageUrl(post.getImageKey()),
 			post.getDescription(),
-			post.getCreatedAt()
+			(int) likeRepository.countByPostId(post.getId())
 		);
 	}
 
