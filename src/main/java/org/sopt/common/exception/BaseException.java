@@ -3,6 +3,7 @@ package org.sopt.common.exception;
 import org.sopt.common.code.ResultCode;
 
 import lombok.Getter;
+import org.sopt.common.code.ResultCode;
 
 @Getter
 public class BaseException extends RuntimeException {
