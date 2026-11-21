@@ -83,7 +83,6 @@ public class UserService {
 			post.getId(),
 			post.getTitle(),
 			toImageUrl(post.getImageKey()),
-			post.getDescription(),
 			(int) likeRepository.countByPostId(post.getId())
 		);
 	}

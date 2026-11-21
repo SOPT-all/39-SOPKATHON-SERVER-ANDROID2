@@ -17,7 +17,6 @@ public record UserProfileResponse(
 		Long postId,
 		String title,
 		String imageUrl,
-		String description,
 		int likeCount
 	) {
 	}
