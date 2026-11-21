@@ -61,6 +61,9 @@ public class UserService {
 			.stream()
 			.map(this::toReceivedOutfitResponse)
 			.toList();
+		int receivedLikeCount = receivedOutfits.stream()
+			.mapToInt(UserProfileResponse.ReceivedOutfitResponse::likeCount)
+			.sum();
 
 		return new UserProfileResponse(
 			user.getId(),
@@ -70,6 +73,7 @@ public class UserService {
 			toImageUrl(user.getProfileImageKey()),
 			postRepository.countByAuthorId(userId),
 			postRepository.countByTargetUserId(userId),
+			receivedLikeCount,
 			receivedOutfits
 		);
 	}
