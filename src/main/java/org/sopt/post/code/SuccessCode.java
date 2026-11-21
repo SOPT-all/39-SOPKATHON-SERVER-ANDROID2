@@ -8,7 +8,8 @@ import org.springframework.http.HttpStatus;
 @Getter
 @RequiredArgsConstructor
 public enum SuccessCode implements ResultCode {
-	SUCCESS(HttpStatus.CREATED, "좋아요 등록에 성공했습니다.");
+	SUCCESS(HttpStatus.CREATED, "좋아요 등록에 성공했습니다."),
+	LIKE_DELETED(HttpStatus.OK, "좋아요 삭제에 성공했습니다.");
 
 	private final HttpStatus status;
 	private final String message;

@@ -11,6 +11,7 @@ import org.sopt.post.service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -45,5 +46,15 @@ public class PostController {
 		PostLikeResponse response = likeService.likePost(userId, postId);
 		return ResponseEntity.status(org.sopt.post.code.SuccessCode.SUCCESS.getStatus())
 			.body(ApiResponse.success(org.sopt.post.code.SuccessCode.SUCCESS, response));
+	}
+
+	@DeleteMapping("/{postId}/like")
+	public ResponseEntity<ApiResponse<PostLikeResponse>> unlikePost(
+		@PathVariable("userId") Long userId,
+		@PathVariable("postId") Long postId
+	) {
+		PostLikeResponse response = likeService.unlikePost(userId, postId);
+		return ResponseEntity.status(org.sopt.post.code.SuccessCode.LIKE_DELETED.getStatus())
+			.body(ApiResponse.success(org.sopt.post.code.SuccessCode.LIKE_DELETED, response));
 	}
 }
