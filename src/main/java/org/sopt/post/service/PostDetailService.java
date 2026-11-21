@@ -77,7 +77,7 @@ public class PostDetailService {
 			post.getDescription(),
 			outfitItems,
 			purchaseLinks,
-			Math.toIntExact(likeRepository.countByPost_Id(postId)),
+			Math.toIntExact(likeRepository.countByPostId(postId)),
 			likeRepository.existsByUser_IdAndPost_Id(viewerId, postId),
 			Math.toIntExact(commentRepository.countByPost_Id(postId)),
 			commentsPreview,
