@@ -10,4 +10,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 public interface PostClothesRepository extends JpaRepository<PostClothes, Long> {
 	@EntityGraph(attributePaths = {"post", "clothes"})
 	List<PostClothes> findAllByPost_IdIn(Collection<Long> postIds);
+
+	@EntityGraph(attributePaths = "clothes")
+	List<PostClothes> findAllByPost_IdOrderByIdAsc(Long postId);
 }
